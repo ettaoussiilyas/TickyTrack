@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ticket;
+use App\Models\Agent;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class TicketController extends Controller
@@ -17,10 +19,10 @@ class TicketController extends Controller
 
     }
 
-    public function allTickets(){
-        $tickets = Ticket::latest()->paginate(10);
-        return view('admin.tickets.index', compact('tickets'));
-    }
+//    public function allTickets(){
+//        $tickets = Ticket::latest()->paginate(10);
+//        return view('admin.tickets.index', compact('tickets'));
+//    }
 
 
     /**
@@ -65,7 +67,8 @@ class TicketController extends Controller
      */
     public function edit(Ticket $ticket)
     {
-        return view('admin.tickets.edit', compact('ticket'));
+        $agents = User::where('role', 'agent')->get();
+        return view('admin.tickets.edit', compact('ticket', 'agents'));
     }
 
 
@@ -74,18 +77,28 @@ class TicketController extends Controller
      */
     public function update(Request $request, Ticket $ticket)
     {
+        $agents = User::where('role', 'agent')->get();
+
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
+            'agent_id' => 'required|exists:users,id',
             'status' => 'required|in:open,in_progress,closed',
-            'assigned_to' => 'nullable|exists:users,id'
         ]);
+
+        // Check if ticket is already assigned before status change
+        if ($ticket->agent_id === null && $request->status !== 'open') {
+            return back()
+                ->withErrors(['assigned_to' => 'Ticket must be assigned before changing status'])
+                ->withInput();
+        }
 
         $ticket->update($validated);
 
         return redirect()->route('admin.tickets.index')
             ->with('success', 'Ticket updated successfully');
     }
+
 
 
     /**

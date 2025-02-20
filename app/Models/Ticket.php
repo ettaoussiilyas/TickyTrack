@@ -14,7 +14,8 @@ class Ticket extends Model
         'description',
         'status',
         'user_id',
-        'assigned_to'
+        'category_id',
+        'agent_id'
     ];
 
     protected $casts = [

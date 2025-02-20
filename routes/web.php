@@ -2,6 +2,10 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AgentController;
+use App\Http\Controllers\TicketController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,19 +33,24 @@ Route::middleware('auth')->group(function () {
 
     // Admin routes
     Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {
-        Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('dashboard');
-        // Other admin routes...
+        Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
+        Route::resource('tickets', TicketController::class);
+        Route::resource('users', UserController::class);
+        Route::get('/reports', [AdminController::class, 'reports'])->name('reports');
+        Route::get('/settings', [AdminController::class, 'settings'])->name('settings');
     });
 
     // User routes
     Route::middleware(['role:user'])->prefix('user')->name('user.')->group(function () {
-        Route::get('/user/dashboard', [UserController::class, 'index'])->name('dashboard');
-        // Other user routes...
+
+        Route::get('/dashboard', [UserController::class, 'index'])->name('dashboard');
+
+
     });
 
     // Agent routes
     Route::middleware(['role:agent'])->prefix('agent')->name('agent.')->group(function () {
-        Route::get('/agent/dashboard', [AgentrController::class, 'index'])->name('dashboard');
+        Route::get('/dashboard', [AgentController::class, 'index'])->name('dashboard');
         // Other user routes...
     });
 

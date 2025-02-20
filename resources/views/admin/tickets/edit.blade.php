@@ -31,18 +31,18 @@
                         </div>
 
                         <div>
-                            <label for="assigned_to" class="block text-sm font-medium text-gray-700">Assign To</label>
-                            <select name="assigned_to" id="assigned_to"
+                            <label for="agent_id" class="block text-sm font-medium text-gray-700">Assign To</label>
+                            <select name="agent_id" id="agent_id"
                                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500">
                                 <option value="">Select Agent</option>
                                 @foreach($agents as $agent)
                                     <option value="{{ $agent->id }}"
-                                        {{ old('assigned_to', $ticket->agent_id) == $agent->id ? 'selected' : '' }}>
+                                        {{ old('agent_id', $ticket->agent_id) == $agent->id ? 'selected' : '' }}>
                                         {{ $agent->name }}
                                     </option>
                                 @endforeach
                             </select>
-                            @error('assigned_to')
+                            @error('agent_id')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
@@ -51,9 +51,9 @@
                             <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
                             <select name="status" id="status"
                                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500">
-                                <option value="open" {{ old('status', $ticket->status) == 'open' ? 'selected' : '' }}>Open</option>
+                                <option value="pending" {{ old('status', $ticket->status) == 'pending' ? 'selected' : '' }}>Open</option>
                                 <option value="in_progress" {{ old('status', $ticket->status) == 'in_progress' ? 'selected' : '' }}>In Progress</option>
-                                <option value="closed" {{ old('status', $ticket->status) == 'closed' ? 'selected' : '' }}>Closed</option>
+                                <option value="resolved" {{ old('status', $ticket->status) == 'resolved' ? 'selected' : '' }}>Closed</option>
                             </select>
                             @error('status')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>

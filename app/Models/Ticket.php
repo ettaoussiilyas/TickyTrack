@@ -29,6 +29,10 @@ class Ticket extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function agent(){
+        return $this->belongsTo(User::class, 'agent_id');
+    }
+
     // Relationship with assigned agent/admin
     public function assignedTo()
     {

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -16,18 +17,37 @@ class UserController extends Controller
 
     public function index()
     {
-        // Get total tickets for the authenticated user
-        $totalTickets = auth()->user()->tickets()->count();
-
-        // Get recent tickets for the authenticated user
-        $recentTickets = auth()->user()->tickets()
-            ->latest()
-            ->take(10)
-            ->with(['assignedTo']) // Eager load relationships if needed
-            ->get();
-
-        return view('user.dashboard', compact('totalTickets', 'recentTickets'));
+        $users = User::all();
+        return view('admin.users.index', compact('users'));
     }
+
+    public function updateRole(Request $request, User $user)
+    {
+        // Prevent updating own role
+        if ($user->id === auth()->id()) {
+            return response()->json(['message' => 'You cannot change your own role'], 403);
+        }
+
+        $validated = $request->validate([
+            'role' => 'required|in:user,agent,admin'
+        ]);
+
+        try {
+            $user->update(['role' => $validated['role']]);
+            return response()->json([
+                'message' => 'Role updated successfully',
+                'success' => true
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Role update failed: ' . $e->getMessage());
+            return response()->json([
+                'message' => 'Failed to update role',
+                'success' => false
+            ], 500);
+        }
+    }
+
+
 
 
     /**
@@ -92,8 +112,14 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(User $user)
     {
-        //
+        if ($user->id === auth()->id()) {
+            return response()->json(['message' => 'Cannot delete yourself'], 403);
+        }
+
+        $user->delete();
+        return response()->json(['message' => 'User deleted successfully']);
     }
+
 }

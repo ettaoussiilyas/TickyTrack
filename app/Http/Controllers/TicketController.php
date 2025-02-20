@@ -77,27 +77,26 @@ class TicketController extends Controller
      */
     public function update(Request $request, Ticket $ticket)
     {
-        $agents = User::where('role', 'agent')->get();
+        // Add this line temporarily to see what data is being received
+        // dd($request->all());
 
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'agent_id' => 'required|exists:users,id',
-            'status' => 'required|in:open,in_progress,closed',
+            'status' => 'required|in:pending,in_progress,resolved'
         ]);
 
-        // Check if ticket is already assigned before status change
-        if ($ticket->agent_id === null && $request->status !== 'open') {
-            return back()
-                ->withErrors(['assigned_to' => 'Ticket must be assigned before changing status'])
-                ->withInput();
+        try {
+            $ticket->update($validated);
+            return redirect()->route('admin.tickets.index')
+                ->with('success', 'Ticket updated successfully');
+        } catch (\Exception $e) {
+            return back()->withInput()
+                ->with('error', 'Failed to update ticket: ' . $e->getMessage());
         }
-
-        $ticket->update($validated);
-
-        return redirect()->route('admin.tickets.index')
-            ->with('success', 'Ticket updated successfully');
     }
+
 
 
 

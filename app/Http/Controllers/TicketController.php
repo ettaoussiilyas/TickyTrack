@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Ticket;
 use Illuminate\Http\Request;
 
 class TicketController extends Controller
@@ -11,10 +12,13 @@ class TicketController extends Controller
      */
     public function index()
     {
-        $tickets = Ticket::with(['user', 'assignedTo'])
-            ->latest()
-            ->paginate(10);
+        $tickets = Ticket::latest()->paginate(10);
+        return view('admin.tickets.index', compact('tickets'));
 
+    }
+
+    public function allTickets(){
+        $tickets = Ticket::latest()->paginate(10);
         return view('admin.tickets.index', compact('tickets'));
     }
 

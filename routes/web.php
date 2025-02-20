@@ -22,7 +22,7 @@ use App\Http\Controllers\TicketController;
 //    return view('welcome');
 //});
 
-Route::get('/dashboard', function () {
+Route::get('/dashboard', function () {//dyal home
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -50,7 +50,7 @@ Route::middleware('auth')->group(function () {
 
     // Agent routes
     Route::middleware(['role:agent'])->prefix('agent')->name('agent.')->group(function () {
-        Route::get('/dashboard', [AgentController::class, 'index'])->name('dashboard');
+            Route::get('/dashboard', [AgentController::class, 'index'])->name('dashboard');
         // Other user routes...
     });
 

@@ -9,7 +9,7 @@
 
             <div class="flex space-x-4">
                 @auth
-                    <a href="{{ route('dashboard') }}" class="text-gray-700 hover:text-gray-900">Dashboard</a>
+                    <a href="{{ route('welcome') }}" class="text-gray-700 hover:text-gray-900">Dashboard</a>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <button type="submit" class="text-gray-700 hover:text-gray-900">Logout</button>

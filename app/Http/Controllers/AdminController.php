@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
+use App\Models\Ticket;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -12,8 +13,10 @@ class AdminController extends Controller
      */
     public function index()
     {
+        $recentTickets = Ticket::latest()->take(7)->get();
+        $totalTickets = Ticket::count();
 
-        return view('admin.dashboard');
+        return view('admin.dashboard', compact('recentTickets', 'totalTickets'));
     }
 
     /**

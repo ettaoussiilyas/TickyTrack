@@ -34,13 +34,13 @@ class AuthenticatedSessionController extends Controller
         $user = Auth::user();
         switch ($user->role) {
             case 'admin':
-                return redirect()->intended('/admin/dashboard');
+                return redirect()->route('admin.dashboard');
             case 'user':
-                return redirect()->intended('/user/dashboard');
+                return redirect()->route('user.dashboard');
             case 'agent':
-                return redirect()->intended('/agent/dashboard');
+                return redirect()->route('agent.dashboard');
             default:
-                return redirect()->intended('/');
+                return redirect('/');
                 break;
         }
     }

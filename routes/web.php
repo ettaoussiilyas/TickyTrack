@@ -29,13 +29,19 @@ Route::middleware('auth')->group(function () {
 
     // Admin routes
     Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {
-        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+        Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('dashboard');
         // Other admin routes...
     });
 
     // User routes
     Route::middleware(['role:user'])->prefix('user')->name('user.')->group(function () {
-        Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('dashboard');
+        Route::get('/user/dashboard', [UserController::class, 'index'])->name('dashboard');
+        // Other user routes...
+    });
+
+    // Agent routes
+    Route::middleware(['role:agent'])->prefix('agent')->name('agent.')->group(function () {
+        Route::get('/agent/dashboard', [AgentrController::class, 'index'])->name('dashboard');
         // Other user routes...
     });
 
@@ -45,5 +51,8 @@ Route::middleware('auth')->group(function () {
 Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
+
+Route::post('/logout', [App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'destroy'])
+    ->name('logout');
 
 require __DIR__.'/auth.php';

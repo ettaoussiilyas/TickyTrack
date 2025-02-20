@@ -2,7 +2,7 @@
 @extends('layouts.admin.app')
 
 @section('content')
-    <h1>This is The Admin Dashboard</h1>
+    <h1>This is The User Dashboard</h1>
     <div class="space-y-6">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
             <!-- Stats Cards -->

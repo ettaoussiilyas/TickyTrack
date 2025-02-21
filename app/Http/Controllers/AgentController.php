@@ -71,4 +71,30 @@ class AgentController extends Controller
 
         return view('agent.messages', compact('tickets', 'messages', 'currentTicket'));
     }
+    public function edit(Ticket $ticket)
+    {
+        // Check if the ticket belongs to the authenticated agent
+        if ($ticket->agent_id !== auth()->id()) {
+            abort(403);
+        }
+
+        return view('agent.tickets.edit', compact('ticket'));
+    }
+
+    public function update(Request $request, Ticket $ticket)
+    {
+        // Check if the ticket belongs to the authenticated agent
+        if ($ticket->agent_id !== auth()->id()) {
+            abort(403);
+        }
+
+        $validated = $request->validate([
+            'status' => ['required', 'string', 'in:pending,in_progress,resolved'],
+        ]);
+
+        $ticket->update($validated);
+
+        return redirect()->route('agent.tickets.mytickets')
+            ->with('success', 'Ticket status updated successfully.');
+    }
 }

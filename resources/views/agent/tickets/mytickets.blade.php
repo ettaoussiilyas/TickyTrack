@@ -36,8 +36,10 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">{{ $ticket->created_at->diffForHumans() }}</td>
                             <td class="px-6 py-4">
+                                <a href="{{ route('agent.tickets.edit', $ticket) }}"
+                                   class="text-indigo-600 hover:text-indigo-900">Update Status</a>
                                 <a href="{{ route('agent.messages', ['ticket' => $ticket->id]) }}"
-                                   class="text-indigo-600 hover:text-indigo-900">View Messages</a>
+                                   class="ml-4 text-indigo-600 hover:text-indigo-900">View Messages</a>
                             </td>
                         </tr>
                     @endforeach

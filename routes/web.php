@@ -67,6 +67,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/tickets/mytickets', [AgentController::class, 'myTickets'])->name('tickets.mytickets');
         Route::get('/messages', [AgentController::class, 'messages'])->name('messages');
         Route::post('/messages', [MessageController::class, 'store'])->name('messages.store');
+        Route::get('/tickets/{ticket}/edit', [AgentController::class, 'edit'])->name('tickets.edit');
+        Route::put('/tickets/{ticket}', [AgentController::class, 'update'])->name('tickets.update');
+
 
     });
 

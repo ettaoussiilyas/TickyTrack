@@ -38,32 +38,26 @@
                                 @endif
                             </div>
 
-                            <div class="flex gap-2">
-                                <button
-                                    onclick="updateRole({{ $user->id }}, 'user')"
-                                    class="role-btn flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-all
-                            {{ $user->role === 'user'
-                                ? 'bg-blue-100 text-blue-700'
-                                : 'bg-gray-100 text-gray-600 hover:bg-gray-200' }}">
+                            <form action="{{ route('admin.users.update-role', $user->id) }}" method="POST" class="flex gap-2">
+                                @csrf
+                                <input type="hidden" name="user_id" value="{{ $user->id }}">
+                                <button type="submit" name="role" value="user"
+                                        class="flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-all
+        {{ $user->role === 'user' ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-600 hover:bg-gray-200' }}">
                                     User
                                 </button>
-                                <button
-                                    onclick="updateRole({{ $user->id }}, 'agent')"
-                                    class="role-btn flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-all
-                            {{ $user->role === 'agent'
-                                ? 'bg-purple-100 text-purple-700'
-                                : 'bg-gray-100 text-gray-600 hover:bg-gray-200' }}">
+                                <button type="submit" name="role" value="agent"
+                                        class="flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-all
+        {{ $user->role === 'agent' ? 'bg-purple-100 text-purple-700' : 'bg-gray-100 text-gray-600 hover:bg-gray-200' }}">
                                     Agent
                                 </button>
-                                <button
-                                    onclick="updateRole({{ $user->id }}, 'admin')"
-                                    class="role-btn flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-all
-                            {{ $user->role === 'admin'
-                                ? 'bg-green-100 text-green-700'
-                                : 'bg-gray-100 text-gray-600 hover:bg-gray-200' }}">
+                                <button type="submit" name="role" value="admin"
+                                        class="flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-all
+        {{ $user->role === 'admin' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600 hover:bg-gray-200' }}">
                                     Admin
                                 </button>
-                            </div>
+                            </form>
+
                         </div>
                     @endforeach
                 </div>

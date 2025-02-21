@@ -34,23 +34,30 @@
         <!-- Messages Area -->
         <div class="flex-1 flex flex-col bg-gray-50" id="messages-container">
             @if(request()->has('ticket'))
-                <div class="flex-1 p-4 overflow-y-auto" id="messages-list">
-                    <!-- Add debugging info -->
-                    @if($messages->isEmpty())
-                        <p class="text-center text-gray-500">No messages yet</p>
-                    @endif
+                <!-- Add debugging information -->
+                <div class="p-4 bg-gray-100">
+                    <p>Current Ticket ID: {{ request()->query('ticket') }}</p>
+                    <p>Message Count: {{ $messages->count() }}</p>
+                </div>
 
-                    @foreach($messages as $message)
-                        <div class="mb-4 flex {{ $message->user->role === 'agent' ? 'justify-start' : 'justify-end' }}">
-                            <div class="max-w-lg {{ $message->user->role === 'agent' ? 'bg-white' : 'bg-indigo-100' }} rounded-lg px-4 py-2 shadow">
+                <div class="flex-1 p-4 overflow-y-auto" id="messages-list">
+                    @forelse($messages as $message)
+                        <div class="mb-4 flex {{ $message->user->id === auth()->id() ? 'justify-end' : 'justify-start' }}">
+                            <div class="max-w-lg {{ $message->user->id === auth()->id() ? 'bg-indigo-100' : 'bg-white' }} rounded-lg px-4 py-2 shadow">
+                                <div class="text-xs text-gray-600 mb-1">
+                                    {{ $message->user->name }}
+                                </div>
                                 <p class="text-sm text-gray-900">{{ $message->content }}</p>
                                 <p class="text-xs text-gray-500 mt-1">
                                     {{ $message->created_at->format('M d, H:i') }}
                                 </p>
                             </div>
                         </div>
-                    @endforeach
+                    @empty
+                        <p class="text-center text-gray-500 my-4">No messages in this ticket yet.</p>
+                    @endforelse
                 </div>
+
                 <div class="p-4 border-t border-gray-200 bg-white">
                     <form action="{{ route('user.messages.store') }}" method="POST" class="flex space-x-2">
                         @csrf

@@ -2,63 +2,73 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Ticket;
 use Illuminate\Http\Request;
 
 class AgentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        return view('agent.dashboard');
+        $agent = auth()->user();
+
+        // Get statistics
+        $totalTickets = Ticket::where('agent_id', $agent->id)->count();
+        $openTickets = Ticket::where('agent_id', $agent->id)
+            ->where('status', 'open')
+            ->count();
+        $inProgressTickets = Ticket::where('agent_id', $agent->id)
+            ->where('status', 'in_progress')
+            ->count();
+        $closedTickets = Ticket::where('agent_id', $agent->id)
+            ->where('status', 'closed')
+            ->count();
+
+        // Get recent tickets
+        $recentTickets = Ticket::where('agent_id', $agent->id)
+            ->latest()
+            ->take(5)
+            ->get();
+
+        return view('agent.dashboard', compact(
+            'totalTickets',
+            'openTickets',
+            'inProgressTickets',
+            'closedTickets',
+            'recentTickets'
+        ));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function myTickets()
     {
-        //
+        $tickets = Ticket::where('agent_id', auth()->id())
+            ->with('user')
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        return view('agent.tickets.mytickets', compact('tickets'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function messages()
     {
-        //
-    }
+        $tickets = Ticket::where('agent_id', auth()->id())
+            ->with(['messages', 'user'])
+            ->latest()
+            ->get();
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+        $messages = collect();
+        $currentTicket = null;
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
+        if (request()->has('ticket')) {
+            $currentTicket = Ticket::with(['messages.user'])
+                ->where('agent_id', auth()->id())
+                ->findOrFail(request()->query('ticket'));
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+            $messages = $currentTicket->messages()
+                ->with('user')
+                ->orderBy('created_at')
+                ->get();
+        }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return view('agent.messages', compact('tickets', 'messages', 'currentTicket'));
     }
 }

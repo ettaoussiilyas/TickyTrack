@@ -54,6 +54,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/tickets', [UserController::class, 'tickets'])->name('tickets.index');
         Route::get('/tickets/{ticket}', [UserController::class, 'showTicket'])->name('tickets.show');
         Route::get('/messages', [MessageController::class, 'index'])->name('messages');
+//        Route::get('/messages', [MessageController::class, 'index'])->name('user.messages');
         Route::post('/messages', [MessageController::class, 'store'])->name('messages.store');
 
 
@@ -62,8 +63,11 @@ Route::middleware('auth')->group(function () {
 
     // Agent routes
     Route::middleware(['role:agent'])->prefix('agent')->name('agent.')->group(function () {
-            Route::get('/dashboard', [AgentController::class, 'index'])->name('dashboard');
-        // Other user routes...
+        Route::get('/dashboard', [AgentController::class, 'index'])->name('dashboard');
+        Route::get('/tickets/mytickets', [AgentController::class, 'myTickets'])->name('tickets.mytickets');
+        Route::get('/messages', [AgentController::class, 'messages'])->name('messages');
+        Route::post('/messages', [MessageController::class, 'store'])->name('messages.store');
+
     });
 
 

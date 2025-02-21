@@ -1,5 +1,5 @@
 {{-- resources/views/admin/dashboard.blade.php --}}
-@extends('layouts.admin.app')
+@extends('layouts.agent.app')
 
 @section('content')
     <h1>This is The Agent Dashboard</h1>

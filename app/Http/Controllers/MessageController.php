@@ -11,21 +11,32 @@ class MessageController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request){
+    public function index(Request $request)
+    {
         $tickets = auth()->user()->tickets()->latest()->get();
         $messages = collect();
+        $currentTicket = null;
 
         if ($request->has('ticket')) {
-            $ticket = Ticket::findOrFail($request->query('ticket'));
+            $currentTicket = Ticket::with(['messages.user'])->findOrFail($request->query('ticket'));
 
-            if ($ticket->user_id !== auth()->id()) {
-                abort(403);
-            }
+            // Add debugging line
+            \Log::info('Loading messages for ticket: ' . $request->query('ticket'));
 
-            $messages = $ticket->messages()->with('user')->orderBy('created_at')->get();
+            $messages = $currentTicket->messages()
+                ->with('user')
+                ->orderBy('created_at')
+                ->get();
+
+            // Add debugging line
+            \Log::info('Found messages: ' . $messages->count());
         }
 
-        return view('user.messages', compact('tickets', 'messages'));
+        return view('user.messages', [
+            'tickets' => $tickets,
+            'messages' => $messages,
+            'currentTicket' => $currentTicket
+        ]);
     }
 
     public function store(Request $request)

@@ -39,6 +39,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/settings', [AdminController::class, 'settings'])->name('settings');
         Route::delete('/admin/users/{user}', [UserController::class, 'destroy'])->name('admin.users.destroy');
         Route::post('/users/{user}/role', [UserController::class, 'updateRole'])->name('users.role');
+        Route::get('/statistics', [AdminController::class, 'statistics'])->name('statistics');
+
 
     });
 

@@ -39,7 +39,7 @@
                                 </span>
                                 </td>
                                 <td class="px-6 py-4">{{ $ticket->user->name }}</td>
-                                <td class="px-6 py-4">{{ $ticket->assignedTo->name ?? 'Unassigned' }}</td>
+                                <td class="px-6 py-4">{{ $ticket->agent->name ?? 'Unassigned' }}</td>
                                 <td class="px-6 py-4">
                                     <a href="{{ route('admin.tickets.show', $ticket) }}" class="text-blue-600 hover:text-blue-900 mr-3">View</a>
                                     <a href="{{ route('admin.tickets.edit', $ticket) }}" class="text-indigo-600 hover:text-indigo-900 mr-3">Edit</a>

@@ -38,7 +38,7 @@
                                 @endif
                             </div>
 
-                            <form action="{{ route('admin.users.update-role', $user->id) }}" method="POST" class="flex gap-2">
+                            <form action="{{ route('admin.users.role', $user->id) }}" method="POST" class="flex gap-2">
                                 @csrf
                                 <input type="hidden" name="user_id" value="{{ $user->id }}">
                                 <button type="submit" name="role" value="user"

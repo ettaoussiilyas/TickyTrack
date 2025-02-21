@@ -23,28 +23,17 @@ class UserController extends Controller
 
     public function updateRole(Request $request, User $user)
     {
-        // Prevent updating own role
         if ($user->id === auth()->id()) {
-            return response()->json(['message' => 'You cannot change your own role'], 403);
+            return back()->with('error', 'You cannot change your own role');
         }
 
         $validated = $request->validate([
             'role' => 'required|in:user,agent,admin'
         ]);
 
-        try {
-            $user->update(['role' => $validated['role']]);
-            return response()->json([
-                'message' => 'Role updated successfully',
-                'success' => true
-            ]);
-        } catch (\Exception $e) {
-            \Log::error('Role update failed: ' . $e->getMessage());
-            return response()->json([
-                'message' => 'Failed to update role',
-                'success' => false
-            ], 500);
-        }
+        $user->update(['role' => $validated['role']]);
+
+        return back()->with('success', 'Role updated successfully');
     }
 
 

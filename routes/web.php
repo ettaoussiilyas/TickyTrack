@@ -18,28 +18,27 @@ use App\Http\Controllers\TicketController;
 |
 */
 
-//Route::get('/', function () {
-//    return view('welcome');
-//});
 
 Route::get('/dashboard', function () {//dyal home
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // Admin routes
     Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {
+
         Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
         Route::resource('tickets', TicketController::class);
         Route::resource('users', UserController::class);
         Route::get('/reports', [AdminController::class, 'reports'])->name('reports');
         Route::get('/settings', [AdminController::class, 'settings'])->name('settings');
-        Route::post('/admin/users/{user}/update-role', [UserController::class, 'updateRole'])->name('admin.users.update-role');
         Route::delete('/admin/users/{user}', [UserController::class, 'destroy'])->name('admin.users.destroy');
+        Route::post('/users/{user}/role', [UserController::class, 'updateRole'])->name('users.role');
 
     });
 

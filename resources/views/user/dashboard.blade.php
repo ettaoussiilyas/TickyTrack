@@ -1,5 +1,5 @@
 {{-- resources/views/admin/dashboard.blade.php --}}
-@extends('layouts.admin.app')
+@extends('layouts.user.app')
 
 @section('content')
     <h1>This is The User Dashboard</h1>

@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AgentController;
 use App\Http\Controllers\TicketController;
+use App\Http\Controllers\MessageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,7 +48,14 @@ Route::middleware('auth')->group(function () {
     // User routes
     Route::middleware(['role:user'])->prefix('user')->name('user.')->group(function () {
 
-        Route::get('/dashboard', [UserController::class, 'index'])->name('dashboard');
+        Route::get('/dashboard', [UserController::class, 'dashboardUser'])->name('dashboard');
+        Route::get('/tickets/create', [UserController::class, 'createTicket'])->name('tickets.create');
+        Route::post('/tickets', [UserController::class, 'storeTicket'])->name('tickets.store');
+        Route::get('/tickets', [UserController::class, 'tickets'])->name('tickets.index');
+        Route::get('/tickets/{ticket}', [UserController::class, 'showTicket'])->name('tickets.show');
+        Route::get('/messages', [MessageController::class, 'index'])->name('messages');
+        Route::post('/messages', [MessageController::class, 'store'])->name('messages.store');
+
 
 
     });

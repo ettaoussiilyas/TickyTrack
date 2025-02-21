@@ -10,15 +10,15 @@
                 </div>
             </div>
 
-            <!-- Navigation Links -->
-            <div class="hidden sm:flex sm:items-center sm:space-x-8">
-                <a href="{{ route('user.dashboard') }}" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
-                    Dashboard
-                </a>
-                <a href="{{ route('user.tickets.index') }}" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
-                    Tickets
-                </a>
-            </div>
+{{--            <!-- Navigation Links -->--}}
+{{--            <div class="hidden sm:flex sm:items-center sm:space-x-8">--}}
+{{--                <a href="{{ route('user.dashboard') }}" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">--}}
+{{--                    Dashboard--}}
+{{--                </a>--}}
+{{--                <a href="{{ route('user.tickets.index') }}" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">--}}
+{{--                    Tickets--}}
+{{--                </a>--}}
+{{--            </div>--}}
 
             <!-- User Menu -->
             <div class="flex items-center">

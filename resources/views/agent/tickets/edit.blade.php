@@ -86,16 +86,16 @@
                                                {{ $ticket->status === $status ? 'checked' : '' }}
                                                class="peer sr-only">
                                         <div class="w-full p-4 text-center rounded-lg border-2 cursor-pointer transition-all duration-200
-                    peer-checked:border-indigo-600 peer-checked:bg-indigo-50 dark:peer-checked:bg-indigo-900/30
-                    border-gray-200 dark:border-gray-600
-                    hover:border-gray-300 dark:hover:border-gray-500
-                    hover:shadow-md
-                    peer-checked:shadow-lg peer-checked:shadow-indigo-100 dark:peer-checked:shadow-indigo-900/30
-                    peer-checked:scale-105 transform
-                    peer-checked:ring-2 peer-checked:ring-indigo-500 peer-checked:ring-offset-2 dark:peer-checked:ring-offset-gray-800">
+                                            peer-checked:border-indigo-600 peer-checked:bg-indigo-50 dark:peer-checked:bg-indigo-900/30
+                                            border-gray-200 dark:border-gray-600
+                                            hover:border-gray-300 dark:hover:border-gray-500
+                                            hover:shadow-md
+                                            peer-checked:shadow-lg peer-checked:shadow-indigo-100 dark:peer-checked:shadow-indigo-900/30
+                                            peer-checked:scale-105 transform
+                                            peer-checked:ring-2 peer-checked:ring-indigo-500 peer-checked:ring-offset-2 dark:peer-checked:ring-offset-gray-800">
                                             <div class="font-medium transition-colors
-                        peer-checked:text-indigo-600 dark:peer-checked:text-indigo-400
-                        text-gray-900 dark:text-white">
+                                                peer-checked:text-indigo-600 dark:peer-checked:text-indigo-400
+                                                text-gray-900 dark:text-white">
                                                 {{ ucfirst(str_replace('_', ' ', $status)) }}
                                             </div>
                                             <!-- Status Icon -->
@@ -147,4 +147,44 @@
             </div>
         </div>
     </div>
-@endsection
+    
+    </div>
+        
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                // Function to update styles
+                function updateStyles() {
+                    $('input[name="status"]').each(function() {
+                        var $radio = $(this);
+                        var $container = $radio.next('div');
+                        var $textElement = $container.find('div:first-child');
+                        
+                        if ($radio.is(':checked')) {
+                            $container.css({
+                                'border-color': '#4f46e5',
+                                'background-color': '#eef2ff',
+                                'transform': 'scale(1.05)',
+                                'box-shadow': '0 10px 15px -3px rgba(79, 70, 229, 0.1), 0 4px 6px -2px rgba(79, 70, 229, 0.05)'
+                            });
+                            $textElement.css('color', '#4f46e5');
+                        } else {
+                            $container.css({
+                                'border-color': '',
+                                'background-color': '',
+                                'transform': '',
+                                'box-shadow': ''
+                            });
+                            $textElement.css('color', '');
+                        }
+                    });
+                }
+                
+                // Initial update
+                updateStyles();
+                
+                // Update on change
+                $('input[name="status"]').on('change', updateStyles);
+            });
+        </script>
+    @endsection
